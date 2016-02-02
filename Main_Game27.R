@@ -1,4 +1,4 @@
-source('Manipulate.R')
+source('Aggrigate.R')
 source('Classify.R')
 source('Evaluate.R')
 source('Bruteforce.R')
@@ -96,7 +96,7 @@ main <- function(){
 	names(UPPER) <<- paramNames
 	
 
-	aggrigate(read.csv('game27.csv'))
+	aggrigate(read.csv('C:\Users\pqf\Google Drive\PhD\Codes\Data\game27.csv'))
 	
 	set.seed(999)
 	dd <<- DEoptim(fn=evaluate, lower=LOWER, upper=UPPER,                                          

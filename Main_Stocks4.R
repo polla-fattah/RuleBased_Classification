@@ -1,4 +1,4 @@
-source('Manipulate.R')
+source('Aggrigate.R')
 source('Classify.R')
 source('Evaluate.R')
 source('Bruteforce.R')
@@ -99,7 +99,7 @@ main <- function(loadData=F){
   
 	if(loadData){
 	  if(TIME_POINT==4){
-	    allData <- read.csv('SP500 StockMarket 1-1-15 to 1-7-15.csv')
+	    allData <- read.csv('C:\Users\pqf\Google Drive\PhD\Codes\Data\SP500 StockMarket 1-1-15 to 1-7-15.csv')
 	    dataSplit <- 63
 	  }
 	  else if(TIME_POINT==3){

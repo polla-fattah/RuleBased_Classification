@@ -1,4 +1,4 @@
-source('Manipulate.R')
+source('Aggrigate.R')
 source('Classify.R')
 source('Evaluate.R')
 source('Bruteforce.R')
@@ -95,7 +95,7 @@ setEnv <- function(){
   
   set.seed(999)
   
-  aggrigate(read.csv('game10.csv'))
+  aggrigate(read.csv('C:\Users\pqf\Google Drive\PhD\Codes\Data\game10.csv'))
   
 }
 main <- function(){

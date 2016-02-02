@@ -1,4 +1,4 @@
-source('Manipulate.R')
+source('Aggrigate.R')
 source('Classify.R')
 source('Evaluate.R')
 source('Bruteforce.R')
@@ -76,8 +76,10 @@ main <- function(loadData=F){
   setVariables()
   registerClasses()
 
+
+
 	if(loadData)
-		allData <- read.csv('SP500 StockMarket 1-1-15 to 1-3-15.csv')#SP500 StockMarket 1-1-15 to 1-3-15.csv
+		allData <- read.csv('C:\Users\pqf\Google Drive\PhD\Codes\Data\SP500 StockMarket 1-1-15 to 1-3-15.csv')#SP500 StockMarket 1-1-15 to 1-3-15.csv
   
   testIndex <- which(allData$Date > 20)
 
@@ -91,7 +93,7 @@ main <- function(loadData=F){
    mcr.centroidDist <<- multiClassify(2, allData,  costFun=centroidDist)
    mcr.completeDist <<- multiClassify(2, allData, costFun=completeDist)
    mcr.varSD <<- multiClassify(2, allData, costFun=varSD)
-  	mcr.varSSE <<- multiClassify(allData, costFun=varSSE)
+    mcr.varSSE <<- multiClassify(allData, costFun=varSSE)
    mcr.varQuantile <<- multiClassify(2, allData, costFun=varQuantile)
   
   #  dcr <<- doubleClassify(allData[which(allData$Date <= 20),] , allData[which(allData$Date > 20),], costFun=varQuantile)
