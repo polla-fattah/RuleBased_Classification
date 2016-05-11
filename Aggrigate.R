@@ -35,7 +35,6 @@ addAggrColumn <- function(fun, colName, dataCol, r=-1, abs=F){
 #==== Generic Aggrigative Functions ====
 itemSD <- function(subdata, usedCol,  r, abs){
 	x <- sd(unlist(subdata[usedCol]))
-	
 	if(r != -1)	x <- round(x, r)
 	if(abs)	x <- abs(x)
 	

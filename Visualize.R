@@ -14,7 +14,6 @@ plotTAAC <- function(classes, className='class', row=2, col=2){
 			i <- i + 1
 		}
 		mtext(ta, side=3, outer=TRUE, line=-3, cex=2)
-		
 	}
 }
 

@@ -95,7 +95,7 @@ setEnv <- function(){
   
   set.seed(999)
   
-  aggrigate(read.csv('C:\Users\pqf\Google Drive\PhD\Codes\Data\game10.csv'))
+  aggrigate(read.csv('C://Users/pqf/Google Drive/PhD/Codes/Data/game10.csv'))
   
 }
 main <- function(){
@@ -136,3 +136,4 @@ timeIt <- function(){
   cat('\n\n+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n')
    
 }
+main()
