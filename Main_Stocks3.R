@@ -79,7 +79,7 @@ main <- function(loadData=F){
 
 
 	if(loadData)
-		allData <- read.csv('C:\Users\pqf\Google Drive\PhD\Codes\Data\SP500 StockMarket 1-1-15 to 1-3-15.csv')#SP500 StockMarket 1-1-15 to 1-3-15.csv
+		allData <- read.csv('SP500 StockMarket 1-1-15 to 1-3-15.csv')#SP500 StockMarket 1-1-15 to 1-3-15.csv
   
   testIndex <- which(allData$Date > 20)
 

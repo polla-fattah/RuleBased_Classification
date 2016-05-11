@@ -66,6 +66,7 @@ multiClassify <- function(allData, itermax=15, trace = T, costFun=varSD){
   
   result
 }
+
 multiClassifyOld <- function(segmentNo, allData, itermax=15, trace = T, costFun=varSD){
   timeLength <- max(allData$Date) / segmentNo
   timeSegment <- 1:timeLength
@@ -103,3 +104,4 @@ testFUn <- function(){
 countEquals <- function(v1, v2){
   length(which((v1==v2) == T))
 }
+

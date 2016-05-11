@@ -7,21 +7,15 @@ source('Visualize.R')
 source('Validate_Stocks.R')
 
 ##### Environment Variables #####
-setVariables <- function(tp=3){
+setVariables <- function(tp=4){
   TIME_POINT <<-tp
   TIME_COL <<- 'Date'
   ID_COL <<- 'Symbol'
-  TEMPORAL_ATTRIBUTES <<- c("ClosedPercent") # , "HighPercent"
+  TEMPORAL_ATTRIBUTES <<- c("Close") # , "HighPercent"
+
 # For full data of 125 time points
-  if(TIME_POINT==4){
-    LOWER <<- c( 1, 10, 5, 19, 12)
-    UPPER <<- c( 4, 14, 9, 24, 16)
-  }
-  else if(TIME_POINT==3){
-    LOWER <<- c( 0, 10, 4, 17, 12)
-    UPPER <<- c( 2, 14, 5, 24, 16)    
-  }
-  
+  LOWER <<- c( 1100, 500, 1600, 650, 550)
+  UPPER <<- c( 1300, 750, 2000, 1000, 800)
 
   
   paramNames <- c('sdClose-VS', 'sdDiff-VS', 'sdClose-US', 'sdDiff-US', 'sdDiff-RS')
@@ -44,7 +38,7 @@ addValPercent <- function(colName, usedCol){
 valDiffConsec <- function(subdata, usedCol, r=-1, abs=F){
   temp <- subdata[[usedCol]]
   x <- sd(temp[-1] - temp[-length(temp)]) * 10
-  
+
   if(r != -1)	x <- round(x, r)
   if(abs)	x <- abs(x)
   
@@ -53,11 +47,8 @@ valDiffConsec <- function(subdata, usedCol, r=-1, abs=F){
 
 addColumns <- function(){
 
-  addValPercent('ClosedPercent', 'Close')
-  addAggrColumn(itemSD, 'ClosedPercentSD', 'ClosedPercent', r = 0)
-  addAggrColumn(valDiffConsec, 'ClosedDiffSD', 'ClosedPercent', r=0)
-  
-
+  addAggrColumn(itemSD, 'ClosedPercentSD', 'Close', r = 3)
+  addAggrColumn(valDiffConsec, 'ClosedDiffSD', 'Close', r=3)
 }
 
 ####### Conditional functions for finding players ########
@@ -87,45 +78,51 @@ registerClasses <- function(){
   
 }
 ###### Main Function #######
-main <- function(loadData=F){
-  allData <- NULL
-  dataSplit <- 0
-  set.seed(999)
-  criteria <- c(centroidDist, completeDist, varSD, varSSE, varQuantile)
-  
-  setVariables()
-  registerClasses()
-  
-  
-	if(loadData){
-	  if(TIME_POINT==4){
-	    allData <- read.csv('C:\Users\pqf\Google Drive\PhD\Codes\Data\SP500 StockMarket 1-1-15 to 1-7-15.csv')
-	    dataSplit <- 63
-	  }
-	  else if(TIME_POINT==3){
-	    allData <- read.csv('SP500 StockMarket 1-1-15 to 1-3-15.csv')
-	    dataSplit <- 20
-	  }
-	}
-  
-  testIndex <- which(allData$Date > dataSplit)
+main <- function(){
+	allData <<- NULL
+	dataSplit <- 0
+	set.seed(999)
+	criteria <- c(centroidDist, completeDist, varSD, varSSE, varQuantile)
+	
+	setVariables(4)
+	registerClasses()
+	
+	allData <<- read.csv('../Data/SP500 1-2015 to 7-2015 Normilized.csv')
+	dataSplit <- 63
+	
+	testIndex <- which(allData$Date > dataSplit)
 
-  ttr.centroidDist <<- trainTest(testIndex, allData, costFun=centroidDist)
-  ttr.completeDist <<- trainTest(testIndex, allData, costFun=completeDist)
-  ttr.varSD <<- trainTest(testIndex, allData, costFun=varSD)
-  ttr.varSSE <<- trainTest(testIndex, allData, costFun=varSSE)
-  ttr.varQuantile <<- trainTest(testIndex, allData, costFun=varQuantile)
+	ttr.centroidDistStock <<- trainTest(testIndex, allData, costFun=centroidDist)
+	dput(ttr.centroidDistStock, file = 'SavedResults\\ttr.centroidDistStock.txt')
 
-  
-#   mcr.centroidDist <<- multiClassify(2, allData,  costFun=centroidDist)
-#   mcr.completeDist <<- multiClassify(2, allData, costFun=completeDist)
-#   mcr.varSD <<- multiClassify(2, allData, costFun=varSD)
-#   mcr.varSSE <<- multiClassify(2, allData, costFun=varSSE)
-#   mcr.varQuantile <<- multiClassify(2, allData, costFun=varQuantile)
-#	bestClassifier <- dd$optim$bestmem
-#	print('hi')
-#	addClass(classify(bestClassifier))
-#	print(table(classify(bestClassifier)))
+	ttr.completeDistStock <<- trainTest(testIndex, allData, costFun=completeDist)
+	dput(ttr.completeDistStock, file = 'SavedResults\\ttr.completeDistStock.txt')
+
+	ttr.varSDStock <<- trainTest(testIndex, allData, costFun=varSD)
+	dput(ttr.varSDStock, file = 'SavedResults\\ttr.varSDStock.txt')
+
+	ttr.varSSEStock <<- trainTest(testIndex, allData, costFun=varSSE)
+	dput(ttr.varSSEStock, file = 'SavedResults\\ttr.varSSEStock.txt')
+
+	ttr.varQuantileStock <<- trainTest(testIndex, allData, costFun=varQuantile)
+	dput(ttr.varQuantileStock, file = 'SavedResults\\ttr.varQuantileStock.txt')
+
+	
+##### If want to split more than two parts each
+	# mcr.centroidDistStock <<- multiClassify(2, allData,  costFun=centroidDist)
+	# dput(mcr.centroidDistStock, file = 'SavedResults\\mcr.centroidDistStock.txt')
+	# mcr.completeDistStock <<- multiClassify(2, allData, costFun=completeDist)
+	# dput(mcr.completeDistStock, file = 'SavedResults\\mcr.completeDistStock.txt')
+	# mcr.varSDStock <<- multiClassify(2, allData, costFun=varSD)
+	# dput(mcr.varSDStock, file = 'SavedResults\\mcr.varSDStock.txt')
+	# mcr.varSSEStock <<- multiClassify(2, allData, costFun=varSSE)
+	# dput(mcr.varSSEStock, file = 'SavedResults\\mcr.varSSEStock.txt')
+	# mcr.varQuantileStock <<- multiClassify(2, allData, costFun=varQuantile)
+	# dput(mcr.varQuantileStock, file = 'SavedResults\\mcr.varQuantileStock.txt')
+########
+	#bestClassifier <- dd$optim$bestmem
+	#addClass(classify(bestClassifier))
+	#print(table(classify(bestClassifier)))
 	
 # 	plotTAAC(c('Very Stable', 'Unstable', 'Rough Stable', 'Smooth Stable')
 # 				,row = 2, col=2)
@@ -133,9 +130,14 @@ main <- function(loadData=F){
   
 	#	bf <<- findBestRule(fn=evaluate, lower=LOWER, upper=UPPER, costFun=varSD)
 }
-main(T)
-#save(ttr.centroidDist, ttr.completeDist, ttr.varSD, ttr.varSSE, 
-#     ttr.varQuantile, file = "objects/emptyFirstClass.RData")
-#load("objects/emptyFirstClass.RData")
+loadRuleBasedStocks <- function(){
+	ttr.centroidDistStock <- dget(file = 'SavedResults\\ttr.centroidDistStock.txt')
+	ttr.completeDistStock <- dget(file = 'SavedResults\\ttr.completeDistStock.txt')
+	ttr.varSDStock <- dget(file = 'SavedResults\\ttr.varSDStock.txt')
+	ttr.varSSEStock <- dget(file = 'SavedResults\\ttr.varSSEStock.txt')
+	ttr.varQuantileStock <- dget(file = 'SavedResults\\ttr.varQuantileStock.txt')
+}
+
+main()
 
 
