@@ -101,7 +101,5 @@ testFUn <- function(){
   }
 }
 
-countEquals <- function(v1, v2){
-  length(which((v1==v2) == T))
-}
+
 

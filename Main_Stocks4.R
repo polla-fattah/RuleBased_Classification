@@ -1,3 +1,4 @@
+library("stargazer")
 source('Aggrigate.R')
 source('Classify.R')
 source('Evaluate.R')
@@ -131,13 +132,25 @@ main <- function(){
 	#	bf <<- findBestRule(fn=evaluate, lower=LOWER, upper=UPPER, costFun=varSD)
 }
 loadRuleBasedStocks <- function(){
-	ttr.centroidDistStock <- dget(file = 'SavedResults\\ttr.centroidDistStock.txt')
-	ttr.completeDistStock <- dget(file = 'SavedResults\\ttr.completeDistStock.txt')
-	ttr.varSDStock <- dget(file = 'SavedResults\\ttr.varSDStock.txt')
-	ttr.varSSEStock <- dget(file = 'SavedResults\\ttr.varSSEStock.txt')
-	ttr.varQuantileStock <- dget(file = 'SavedResults\\ttr.varQuantileStock.txt')
+	ttr.centroidDistStock <<- dget(file = 'SavedResults\\ttr.centroidDistStock.txt')
+	ttr.completeDistStock <<- dget(file = 'SavedResults\\ttr.completeDistStock.txt')
+	ttr.varSDStock <<- dget(file = 'SavedResults\\ttr.varSDStock.txt')
+	ttr.varSSEStock <<- dget(file = 'SavedResults\\ttr.varSSEStock.txt')
+	ttr.varQuantileStock <<- dget(file = 'SavedResults\\ttr.varQuantileStock.txt')
 }
 
-main()
+percentages <- function(){
+  countEquals <- function(v1, v2){
+    length(which((v1==v2) == T))
+  }
+  result = list()
+  result$centroidDistStock <<- countEquals( ttr.centroidDistStock$trainClassLabels, ttr.centroidDistStock$testClassLabels)/497
+  result$completeDistStock <<-countEquals( ttr.completeDistStock$trainClassLabels, ttr.completeDistStock$testClassLabels)/497
+  result$varSDStock <<-countEquals( ttr.varSDStock$trainClassLabels, ttr.varSDStock$testClassLabels)/497
+  result$varSSEStock <<-countEquals( ttr.varSSEStock$trainClassLabels, ttr.varSSEStock$testClassLabels)/497
+  result$varQuantileStock <<- countEquals( ttr.varQuantileStock$trainClassLabels, ttr.varQuantileStock$testClassLabels)/497
+  return (result)
+}
+#main()
 
 

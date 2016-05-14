@@ -1,4 +1,5 @@
 filter <- function(a){
+  return (F)
   # Rules for very stable stocks
    	if(a$SD_Close < 1200 && a$SD_Diff < 600)
       return (T)
@@ -44,7 +45,7 @@ plotPart <- function(a){
 		
 		xlabVal = paste0('SD * 10 = ', a$SD_Diff)
 		
-	 	plot(x=a$Date[-1], y = a$percentageClose, main=paste(a$name, '%'), 
+	 	plot(x=a$Date[-1], y = a$percentageClose, main=paste(a$name, 'Diff'), 
 	 		  xlab = xlabVal, ylab = 'Market Value', col='brown')
 	 	
 	 	lines(x=a$Date[-1], y = a$percentageClose)
