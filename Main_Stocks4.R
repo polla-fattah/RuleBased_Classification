@@ -140,10 +140,8 @@ loadRuleBasedStocks <- function(){
 }
 
 percentages <- function(){
-  countEquals <- function(v1, v2){
-    length(which((v1==v2) == T))
-  }
-  result = list()
+  countEquals <- function(v1, v2)length(which((v1==v2) == T))
+  result <<- list()
   result$centroidDistStock <<- countEquals( ttr.centroidDistStock$trainClassLabels, ttr.centroidDistStock$testClassLabels)/497
   result$completeDistStock <<-countEquals( ttr.completeDistStock$trainClassLabels, ttr.completeDistStock$testClassLabels)/497
   result$varSDStock <<-countEquals( ttr.varSDStock$trainClassLabels, ttr.varSDStock$testClassLabels)/497

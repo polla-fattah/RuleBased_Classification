@@ -150,4 +150,28 @@ main <- function(calculate=FALSE){
   }
 
 }
-main(FALSE)
+percentages <- function(){ # Comparison between first and second quarters
+  require(clv)
+
+  Jaccard <- function(clust1, clust2) clv.Jaccard(std.ext(clust1, clust2))
+  FM <- function(clust1, clust2) clv.Folkes.Mallows(std.ext(clust1, clust2))
+  countEquals <- function(v1, v2)length(which((v1==v2) == T))
+  
+  result <<- list()
+  result$kmAgri_FM <<- FM( kmAgriH1$cluster, kmAgriH2$cluster)
+  result$closedKM_FM <<-FM( closedKMH1$cluster, closedKMH2$cluster)
+  result$dtwHiraClust_FM <<-FM( dtwHiraClustH1, dtwHiraClustH2)
+  
+  result$kmAgri_Ja <<- Jaccard( kmAgriH1$cluster, kmAgriH2$cluster)
+  result$closedKM_Ja <<-Jaccard( closedKMH1$cluster, closedKMH2$cluster)
+  result$dtwHiraClust_Ja <<-Jaccard( dtwHiraClustH1, dtwHiraClustH2)
+  
+  result$kmAgri_Pre <<- countEquals( kmAgriH1$cluster, kmAgriH2$cluster) / 497
+  result$closedKM_Pre <<-countEquals( closedKMH1$cluster, closedKMH2$cluster) / 497
+  result$dtwHiraClust_Pre <<-countEquals( dtwHiraClustH1, dtwHiraClustH2) / 497
+  
+  
+  return (result)
+}
+
+#main(FALSE)
