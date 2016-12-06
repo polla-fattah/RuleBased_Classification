@@ -94,32 +94,32 @@ main <- function(){
 	testIndex <- which(allData$Date > dataSplit)
 
 	ttr.centroidDistStock <<- trainTest(testIndex, allData, costFun=centroidDist)
-	dput(ttr.centroidDistStock, file = 'SavedResults\\ttr.centroidDistStock.txt')
+	dput(ttr.centroidDistStock, file = 'SavedResults/ttr.centroidDistStock.txt')
 
 	ttr.completeDistStock <<- trainTest(testIndex, allData, costFun=completeDist)
-	dput(ttr.completeDistStock, file = 'SavedResults\\ttr.completeDistStock.txt')
+	dput(ttr.completeDistStock, file = 'SavedResults/ttr.completeDistStock.txt')
 
 	ttr.varSDStock <<- trainTest(testIndex, allData, costFun=varSD)
-	dput(ttr.varSDStock, file = 'SavedResults\\ttr.varSDStock.txt')
+	dput(ttr.varSDStock, file = 'SavedResults/ttr.varSDStock.txt')
 
 	ttr.varSSEStock <<- trainTest(testIndex, allData, costFun=varSSE)
-	dput(ttr.varSSEStock, file = 'SavedResults\\ttr.varSSEStock.txt')
+	dput(ttr.varSSEStock, file = 'SavedResults/ttr.varSSEStock.txt')
 
 	ttr.varQuantileStock <<- trainTest(testIndex, allData, costFun=varQuantile)
-	dput(ttr.varQuantileStock, file = 'SavedResults\\ttr.varQuantileStock.txt')
+	dput(ttr.varQuantileStock, file = 'SavedResults/ttr.varQuantileStock.txt')
 
 	
 ##### If want to split more than two parts each
 	# mcr.centroidDistStock <<- multiClassify(2, allData,  costFun=centroidDist)
-	# dput(mcr.centroidDistStock, file = 'SavedResults\\mcr.centroidDistStock.txt')
+	# dput(mcr.centroidDistStock, file = 'SavedResults/mcr.centroidDistStock.txt')
 	# mcr.completeDistStock <<- multiClassify(2, allData, costFun=completeDist)
-	# dput(mcr.completeDistStock, file = 'SavedResults\\mcr.completeDistStock.txt')
+	# dput(mcr.completeDistStock, file = 'SavedResults/mcr.completeDistStock.txt')
 	# mcr.varSDStock <<- multiClassify(2, allData, costFun=varSD)
-	# dput(mcr.varSDStock, file = 'SavedResults\\mcr.varSDStock.txt')
+	# dput(mcr.varSDStock, file = 'SavedResults/mcr.varSDStock.txt')
 	# mcr.varSSEStock <<- multiClassify(2, allData, costFun=varSSE)
-	# dput(mcr.varSSEStock, file = 'SavedResults\\mcr.varSSEStock.txt')
+	# dput(mcr.varSSEStock, file = 'SavedResults/mcr.varSSEStock.txt')
 	# mcr.varQuantileStock <<- multiClassify(2, allData, costFun=varQuantile)
-	# dput(mcr.varQuantileStock, file = 'SavedResults\\mcr.varQuantileStock.txt')
+	# dput(mcr.varQuantileStock, file = 'SavedResults/mcr.varQuantileStock.txt')
 ########
 	#bestClassifier <- dd$optim$bestmem
 	#addClass(classify(bestClassifier))
@@ -132,11 +132,11 @@ main <- function(){
 	#	bf <<- findBestRule(fn=evaluate, lower=LOWER, upper=UPPER, costFun=varSD)
 }
 loadRuleBasedStocks <- function(){
-	ttr.centroidDistStock <<- dget(file = 'SavedResults\\ttr.centroidDistStock.txt')
-	ttr.completeDistStock <<- dget(file = 'SavedResults\\ttr.completeDistStock.txt')
-	ttr.varSDStock <<- dget(file = 'SavedResults\\ttr.varSDStock.txt')
-	ttr.varSSEStock <<- dget(file = 'SavedResults\\ttr.varSSEStock.txt')
-	ttr.varQuantileStock <<- dget(file = 'SavedResults\\ttr.varQuantileStock.txt')
+	ttr.centroidDistStock <<- dget(file = 'SavedResults/ttr.centroidDistStock.txt')
+	ttr.completeDistStock <<- dget(file = 'SavedResults/ttr.completeDistStock.txt')
+	ttr.varSDStock <<- dget(file = 'SavedResults/ttr.varSDStock.txt')
+	ttr.varSSEStock <<- dget(file = 'SavedResults/ttr.varSSEStock.txt')
+	ttr.varQuantileStock <<- dget(file = 'SavedResults/ttr.varQuantileStock.txt')
 }
 
 percentages <- function(){

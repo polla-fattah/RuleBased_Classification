@@ -16,8 +16,6 @@ plotTAAC <- function(classes, className='class', row=2, col=2){
 		mtext(ta, side=3, outer=TRUE, line=-3, cex=2)
 	}
 }
-
-
 # library(plotrix)
 # library(gplots)
 # library(Hmisc)
@@ -216,50 +214,50 @@ plotTAAC <- function(classes, className='class', row=2, col=2){
 # 	}
 # }
 # 
-# playerParameter <- function(player){
-#     s <- player$idsubj
-#     png(paste0('P',s ,'.png'), width=800, height=400)
-#     par(mfrow= c(1, 2))
-#     
-#     # Plot 
-#     plot(0:20, player$initial, main=paste0("predisposition for contribution\n idtype = ",player$idtyp ), 
-#          ylim=c(0,20), xlim=c(0,20), ylab="claiming Contribution", 
-#          xlab=paste0("Assuming Contribution of other players\n",
-#                      "Claim contribution (mean = ", round(player$initialMean, 3),
-#                      ", slop = ", round(player$initialSlop, 3), ")"))
-#     lines(0:20, player$initial)
-#     
-#     abline(player$initialReg)
-#     
-#     # plot beleif 
-#     plot(1:10, player$belief, xlim=c(1, 10), 
-#          xlab= paste("Time\nMean of (contrib=", round(player$contribMean, 3), 
-#             " ,belief=", round(player$beliefMean, 3), ")"),
-#          ylab="player Belief", ylim=c(0, 20), col="blue")
-#     lines(1:10, player$belief, col="blue")
-# 
-#     abline(player$beliefReg, col="blue")
-#     
-#     # plot Contributions 
-# 
-# 
-#     points(1:10, player$contribution, xlim=c(1, 10), 
-#          ylab="player Belief", ylim=c(0, 20), 
-#          main=paste0("player #", s, "'s beleif during the game rounds"), col="red")
-#     lines(1:10, player$contribution, col="red", lty=2, type="o", pch=22)
-#     abline(player$contiribReg, col="red", lty=2)
-#     
-#     legend(7, 20.5, c("Beleif","Contribution"), cex=0.8, 
-#            col=c("blue","red"), pch=21:22, lty=1:2);
-#     
-#     title(paste0("\nUser #", s), outer=TRUE)
-#     title (main=paste0("\nContrbution Slop =",
-#                        round(player$contiribSlop, 3), ", Belief Slop =", round(player$beliefSlop, 3), "\n newClass = ", player$newClass))
-# 
-# 
-#     dev.off()
-#   par(mfrow= c(1, 1))
-# }
+#playerParameter <- function(player){
+#  s <- player$idsubj
+#  png(paste0('P',s ,'.png'), width=800, height=400)
+#  par(mfrow= c(1, 2))
+#  
+#  # Plot
+#  plot(0:20, player$initial, main=paste0("predisposition for contribution\n idtype = ",player$idtyp ),
+#       ylim=c(0,20), xlim=c(0,20), ylab="claiming Contribution",
+#       xlab=paste0("Assuming Contribution of other players\n",
+#                   "Claim contribution (mean = ", round(player$initialMean, 3),
+#                   ", slop = ", round(player$initialSlop, 3), ")"))
+#  lines(0:20, player$initial)
+#  
+#  abline(player$initialReg)
+#  
+#  # plot beleif
+#  plot(1:10, player$belief, xlim=c(1, 10),
+#       xlab= paste("Time\nMean of (contrib=", round(player$contribMean, 3),
+#                   " ,belief=", round(player$beliefMean, 3), ")"),
+#       ylab="player Belief", ylim=c(0, 20), col="blue")
+#  lines(1:10, player$belief, col="blue")
+#  
+#  abline(player$beliefReg, col="blue")
+#  
+#  # plot Contributions
+#  
+#  
+#  points(1:10, player$contribution, xlim=c(1, 10),
+#         ylab="player Belief", ylim=c(0, 20),
+#         main=paste0("player #", s, "'s beleif during the game rounds"), col="red")
+#  lines(1:10, player$contribution, col="red", lty=2, type="o", pch=22)
+#  abline(player$contiribReg, col="red", lty=2)
+#  
+#  legend(7, 20.5, c("Beleif","Contribution"), cex=0.8,
+#         col=c("blue","red"), pch=21:22, lty=1:2);
+#  
+#  title(paste0("\nUser #", s), outer=TRUE)
+#  title (main=paste0("\nContrbution Slop =",
+#                     round(player$contiribSlop, 3), ", Belief Slop =", round(player$beliefSlop, 3), "\n newClass = ", player$newClass))
+#  
+#  
+#  dev.off()
+#  par(mfrow= c(1, 1))
+#}
 # 
 # 
 # period2BeliefCustom <- function(data, cls){
