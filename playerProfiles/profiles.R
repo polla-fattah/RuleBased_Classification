@@ -48,10 +48,10 @@ plotPlayerProfile <- function(player){
   par(mfrow= c(1, 2))
   
   # Plot 
-  plot(0:20, player$initial, main=paste0("predisposition for contribution\n class = ",player$idtyp ), 
-       ylim=c(0,20), xlim=c(0,20), ylab="claiming Contribution", 
-       xlab=paste0("Assuming Contribution of other players\n",
-                   "Claim contribution (mean = ", round(player$initialMean, 3),
+  plot(0:20, player$initial, main=paste0("predisposition for contribution"), 
+       ylim=c(0,20), xlim=c(0,20), ylab="Conditional Contribution", 
+       xlab=paste0("presumed co-players' contribution\n",
+                   "(mean = ", round(player$initialMean, 3),
                    ", reg = ", round(player$initialSlop, 3), ")"))
   lines(0:20, player$initial)
   
@@ -59,9 +59,9 @@ plotPlayerProfile <- function(player){
   
   # plot beleif 
   plot(1:10, player$belief, xlim=c(1, 10), 
-       xlab= paste("Time\nMean of (contrib=", round(player$contribMean, 3), 
+       xlab= paste("Game Round\nMean of (contrib=", round(player$contribMean, 3), 
                    " ,belief=", round(player$beliefMean, 3), ")"),
-       ylab="player Belief", ylim=c(0, 20), col="blue")
+       ylab="Player's Contribution & Belief", ylim=c(0, 20), col="blue")
   lines(1:10, player$belief, col="blue")
   
   abline(player$beliefReg, col="blue")
@@ -80,7 +80,7 @@ plotPlayerProfile <- function(player){
   
   title(paste0("\nPlayer ", s), outer=TRUE)
   title (main=paste0("\nContrbution Reg =",
-                     round(player$contiribSlop, 3), ", Belief Reg =", round(player$beliefSlop, 3), "\n newClass = ", player$newClass))
+                     round(player$contiribSlop, 3), ", Belief Reg =", round(player$beliefSlop, 3)))
   
   
   dev.off()
