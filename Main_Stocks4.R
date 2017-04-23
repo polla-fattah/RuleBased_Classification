@@ -33,7 +33,6 @@ addValPercent <- function(colName, usedCol){
     DATA_FRAME[ids, colName] <<- round((DATA_FRAME[ids, usedCol] / max(DATA_FRAME[ids, usedCol])) * 100, 0)
     
   }
-   
 }
 # Difference of consecutive values
 valDiffConsec <- function(subdata, usedCol, r=-1, abs=F){
@@ -44,6 +43,23 @@ valDiffConsec <- function(subdata, usedCol, r=-1, abs=F){
   if(abs)	x <- abs(x)
   
   return(x)
+}
+
+addConsDiffColumn <- function(){
+  column <- rep(0, nrow(DATA_FRAME))
+
+  for(id in ITEM_ID){
+    ids <- DATA_FRAME[ID_COL] == id
+
+    temp <- DATA_FRAME[ids,]$Close
+
+    v <- temp[-1] - temp[-length(temp)]
+    
+    column[ids] <- c(round(mean(v), 0), v)
+
+  }
+  DATA_FRAME['closedDiff'] <<- column
+  
 }
 
 addColumns <- function(){

@@ -31,10 +31,10 @@ findBestRule <- function(fn, lower, upper, ...){
 			cat(curValue, '\n\n')
 		}
 	}
-	cc <- proc.time() - startTime
-	cat('Time required in Minutes : ', cc[3]/60, '\n')
-	cat(curValue, '\n\n')
-	return (list(min=minCost, best=bestValue))
+	cc <- (proc.time() - startTime)[3]/60
+	cat('Time required in Minutes : ', cc, '\n')
+	cat(bestValue, '\n\n')
+	return (list(time=cc, best=bestValue))
 }
 
 increment <- function(idx=1){

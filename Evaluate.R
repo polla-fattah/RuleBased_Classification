@@ -64,19 +64,21 @@ centroidDist <- function(data, clust){
 }
 ###### Internal Criteria #######
 Dunn <- function(data, clust, intracls="centroid", intercls="centroid"){
-	data <- sapply(X=data, FUN= as.double) 
-	clust <- as.integer(clust)
+	data <- sapply(X=data, FUN= as.double)
 	
+	clust <- as.integer(clust)
+	if(length(table(clust)) < 4)
+	  return(1000000)
 	scatt <- cls.scatt.data(data, clust)
 
 	clv.Dunn(scatt, intracls = intracls, intercls = intercls)
-
 }
 
 Davies.Bouldin <- function(data,clust, intracls="centroid", intercls="centroid"){
 	data <- sapply(X=data, FUN= as.double) 
 	clust <- as.integer(clust)
-	
+	if(length(table(clust)) < 4)
+	  return(1000000)
 	scatt <- cls.scatt.data(data, clust)
 	clv.Davies.Bouldin( scatt, intracls = intracls, intercls = intercls)
 }

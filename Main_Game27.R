@@ -73,32 +73,41 @@ isStrongContributor <- function(p, curValue){
 
 
 ###### Main Function #######
-main <- function(){
-	
-	#Environment Variables
-	TIME_COL <<- 'period'
-	ID_COL <<- 'idsubj'
-	TEMPORAL_ATTRIBUTES <<- c("contribution", "belief") # 
-	
-	# registering classes 
-	registerNewClass('FR', isFreeRider)
-	registerNewClass('WC', isWeakContributor)
-	registerNewClass('NC', isNormalContributor)
-	registerNewClass('SC', isStrongContributor)
-	
-	
-	LOWER <<- c( 1, 1, 2, 2, 4, 2, 20, 15) #FR, WC, NC, SC
-	UPPER <<- c( 1, 4, 6, 9, 9, 9, 25, 20) #FR, WC, NC, SC
-	paramNames <- c('meanContrib-Fr', 'meanContrib-Wc', 'meanContrib-Nc', 
-						 'meanBelief-Fr', 'meanBelief-Wc', 'meanBelief-Nc', 
-						 'zeroContrib-Fr', 'zeroContrib-Wc')
-	names(LOWER) <<- paramNames
-	names(UPPER) <<- paramNames
-	
+setEnv <- function(subset=c()){
+  TIME_COL <<- 'period'
+  ID_COL <<- 'idsubj'
+  TEMPORAL_ATTRIBUTES <<- c("contribution") # , "belief"
+  
+  # registering classes 
+  registerNewClass('FR', isFreeRider)
+  registerNewClass('WC', isWeakContributor)
+  registerNewClass('NC', isNormalContributor)
+  registerNewClass('SC', isStrongContributor)
+  
+  
+  LOWER <<- c( 1, 1, 2, 2, 4, 2, 20, 15) 
+  UPPER <<- c( 1, 4, 6, 9, 9, 9, 25, 20) 
+  paramNames <- c('meanContrib-Fr', 'meanContrib-Wc', 'meanContrib-Nc', 
+                  'meanBelief-Fr', 'meanBelief-Wc', 'meanBelief-Nc', 
+                  'zeroContrib-Fr', 'zeroContrib-Wc')
+  names(LOWER) <<- paramNames
+  names(UPPER) <<- paramNames
+  
+  set.seed(999) 
+  rawData <- read.csv('C://Users/pqf/Google Drive/PhD/Codes/Data/game27.csv')
+  
+  if(length(subset) == 0){
+    aggrigate(rawData)
+  }
+  else{
+    aggrigate(rawData[!(rawData$idsubj %in% subset),])
+  }
+  
 
-	aggrigate(read.csv('C://Users/pqf/Google Drive/PhD/Codes/Data/game27.csv'))
-	
-	set.seed(999)
+}
+main <- function(){
+  setEnv()
+
 	dd <<- DEoptim(fn=evaluate, lower=LOWER, upper=UPPER,                                          
 						DEoptim.control(itermax=20, trace = T), 
 						fnMap=fnm, costFun=varSSE) 
@@ -120,4 +129,69 @@ main <- function(){
 #	evaluate(UPPER)
 #	bf <<- findBestRule(fn=evaluate, lower=LOWER, upper=UPPER, costFun=varSD)
 }
-main()
+mainBruteForce <- function(){
+  setEnv(); set.seed(999)
+  best_varQuantile <<- findBestRule(fn=evaluate, lower=LOWER, upper=UPPER, costFun=varQuantile)
+  
+#  setEnv(); set.seed(999) 
+#  best_varSD       <<- findBestRule(fn=evaluate, lower=LOWER, upper=UPPER, costFun=varSD)
+  
+  setEnv(); set.seed(999) 
+  best_completeDist <<- findBestRule(fn=evaluate, lower=LOWER, upper=UPPER, costFun=completeDist)
+  
+#  setEnv(); set.seed(999) 
+#  best_centroidDist <<- findBestRule(fn=evaluate, lower=LOWER, upper=UPPER, costFun=centroidDist)
+  
+#  setEnv(); set.seed(999) 
+#  best_Dunn <<- findBestRule(fn=evaluate, lower=LOWER, upper=UPPER, costFun=Dunn)
+  
+#  setEnv(); set.seed(999) 
+#  best_DB   <<- findBestRule(fn=evaluate, lower=LOWER, upper=UPPER, costFun=Davies.Bouldin)
+  
+  setEnv(); set.seed(999) 
+  best_SD   <<- findBestRule(fn=evaluate, lower=LOWER, upper=UPPER, costFun=SD)
+  
+#  setEnv(); set.seed(999) 
+#  best_SDbw <<- findBestRule(fn=evaluate, lower=LOWER, upper=UPPER, costFun=SDbw)
+}
+#mainBruteForce()
+#main()
+#table(classify(c(1, 1, 3, 3, 4, 2, 24, 17))) # IQR
+#table(classify(c(1, 4, 6, 4, 9, 2, 20, 20))) # SD
+#table(classify(c(1, 3, 3, 2, 4, 2, 20, 15))) # Complete
+
+calculateAUC <- function(){
+  setEnv()
+  subjects <<- AGGRI_DATA$idsubj
+  
+  funcCosts <- c(varQuantile, completeDist, SD)
+  
+  set.seed(999)
+  flds <- createFolds(AGGRI_DATA$idsubj, k = 10, 
+                      list = TRUE, returnTrain = FALSE)
+  
+  kk <- 1
+  for(ffn in funcCosts){
+    aucs = c()
+    if(kk == 1) refrenceClass <- classify(c(1, 1, 3, 3, 4, 2, 24, 17)) # IQR
+    if(kk == 2) refrenceClass <- classify(c(1, 3, 3, 2, 4, 2, 20, 15)) # Complete
+    if(kk == 3) refrenceClass <- classify(c(1, 4, 6, 4, 9, 2, 20, 20)) # SD
+    
+    
+    for(i in 1:10){
+      indx <- flds[[i]]
+      setEnv(subjects[indx])
+      dd <<- DEoptim(fn=evaluate, lower=LOWER, upper=UPPER,                                          
+                     DEoptim.control(itermax=5, trace = F), 
+                     fnMap=function(x) {round(x,0)}, costFun=ffn)
+      setEnv()
+      foundClass <- classify(dd$optim$bestmem)
+      
+      aucs[i] <- AUC(foundClass[indx], refrenceClass[indx])
+    }
+    print(round(mean(aucs), 3))
+    kk <- kk + 1
+  }
+}
+
+calculateAUC()

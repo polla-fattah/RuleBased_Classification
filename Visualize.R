@@ -4,18 +4,55 @@
 plotTAAC <- function(classes, className='class', row=2, col=2){
 	DF <- split(DATA_FRAME[,c(TEMPORAL_ATTRIBUTES, TIME_COL)], DATA_FRAME[[className]])
 	
+	sdMean = c()
 	for(ta in TEMPORAL_ATTRIBUTES){
 		i <- 1
-		# S, W, N
-		par(mfrow=c(row,col))
+		
+		par(mfrow=c(row,col),
+		    oma = c(2,1,0,0),
+		    mar = c(1.7,1.7,1.3,0.5),
+		    mgp = c(0, 0.3, 0))
+		
 		for(df in DF){
 			dat <- split(df[, ta], df[TIME_COL])
-			boxplot(dat, xlab=classes[i])
+			
+			sdMean[i] <- calculateSTD(dat)
+			boxplot(dat, main=classes[i], axes = F, ylab=NA, xlab=NA)
+			box()
+			axis(side = 1, tck = -.01)
+			axis(side = 2, las = 1, tck = -.01)
 			i <- i + 1
 		}
-		mtext(ta, side=3, outer=TRUE, line=-3, cex=2)
+
+		mtext(ta, side=2, outer=T, line=-0.3, cex=1.2)
+		mtext('Time Points', side=1, outer=T, line=0, cex=1.2)
+		 
 	}
+	print('--------------------')
+	print(mean(sdMean))
+	print('--------------------')
+	
 }
+calculateSTD <- function(dat){
+  result = c()
+  i = 1
+  for (d in dat){
+    result[i] <- sd(d)
+    i <- i + 1
+  }
+  print(mean(result))
+  return(mean(result))
+  
+}
+attachClass <- function(cls, rounds = 10){
+  DATA_FRAME$class <<- rep(cls, each = rounds)
+}
+
+
+#plotTAAC(c('Free Rider', 'Weak Contributor', 'Normal Contributor', 'Strong Contributor'))
+#plotTAAC(c('Conditional Contributor', 'Free Rider', 'Triangle Contributor', 'Others')
+#         , className =  'idtyp')
+
 # library(plotrix)
 # library(gplots)
 # library(Hmisc)
